@@ -26,6 +26,12 @@ import tuliren.resource_pool.exceptions.ResourceCreationFailureException;
 
 class ResourcePoolImpl<T extends Closeable> implements IResourcePool<T> {
   private static final Logger LOG = LoggerFactory.getLogger(ResourcePoolImpl.class);
+
+  public static final int DEFAULT_CORE_POOL_SIZE = 3;
+  public static final int DEFAULT_MAX_POOL_SIZE = 3;
+  public static final Duration DEFAULT_WAITING_TIMEOUT = Duration.standardSeconds(30);
+  public static final Duration DEFAULT_KEEP_ALIVE_TIME = Duration.standardMinutes(30);
+
   private static final Duration MAX_IDLE_RESOURCE_CHECK_TIME = Duration.standardSeconds(10);
   private static final Duration AUTO_CLOSE_IDLE_RESOURCE_THRESHOLD = Duration.ZERO;
 
@@ -44,7 +50,7 @@ class ResourcePoolImpl<T extends Closeable> implements IResourcePool<T> {
   private long lastActiveTimestamp = System.currentTimeMillis();
   private boolean closed = false;
 
-  private ResourcePoolImpl(Callable<T> resourceConstructor, int corePoolSize, int maxPoolSize, Duration waitingTimeout, Duration keepAliveTime) {
+  ResourcePoolImpl(Callable<T> resourceConstructor, int corePoolSize, int maxPoolSize, Duration waitingTimeout, Duration keepAliveTime) {
     this.resourceConstructor = resourceConstructor;
     this.corePoolSize = corePoolSize;
     this.maxPoolSize = maxPoolSize;
