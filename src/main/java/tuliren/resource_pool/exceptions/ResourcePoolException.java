@@ -3,7 +3,7 @@ package tuliren.resource_pool.exceptions;
 public class ResourcePoolException extends RuntimeException {
 
   public ResourcePoolException() {
-
+    super();
   }
 
   public ResourcePoolException(String message) {
